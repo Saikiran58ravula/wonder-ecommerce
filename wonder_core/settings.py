@@ -37,6 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Wonder apps
+    'accounts',
+    'products',
+    'cart',
+    'orders',
 ]
 
 MIDDLEWARE = [
