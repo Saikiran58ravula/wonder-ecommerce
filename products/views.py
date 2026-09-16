@@ -22,7 +22,10 @@ def product_list(request):
 
     query = request.GET.get('q')
     if query:
-        products = products.filter(name__icontains=query)
+        from django.db.models import Q
+        products = products.filter(
+            Q(name__icontains=query) | Q(description__icontains=query) | Q(category__name__icontains=query)
+        )
 
     context = {
         'products': products,
