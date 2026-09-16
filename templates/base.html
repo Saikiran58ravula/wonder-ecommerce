@@ -24,6 +24,13 @@
     <a href="{% url 'products:home' %}">Home</a>
     <a href="{% url 'products:product_list' %}">Shop</a>
     <a href="{% url 'cart:view_cart' %}">Cart</a>
+    {% if user.is_authenticated %}
+        <a href="{% url 'accounts:profile' %}">{{ user.username }}</a>
+        <a href="{% url 'accounts:logout' %}">Logout</a>
+    {% else %}
+        <a href="{% url 'accounts:login' %}">Login</a>
+        <a href="{% url 'accounts:register' %}">Register</a>
+    {% endif %}
 </nav>
         {% if messages %}
     <div class="container" style="padding-top: 10px;">

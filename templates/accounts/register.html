@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - Wonder{% endblock %}
+
+{% block content %}
+<h1>Create Your Account</h1>
+
+<form method="post" style="max-width: 400px;">
+    {% csrf_token %}
+    {% for field in form %}
+        <div style="margin-bottom: 15px;">
+            <label>{{ field.label }}</label><br>
+            {{ field }}
+            {% if field.errors %}
+                <p style="color: red; font-size: 13px;">{{ field.errors }}</p>
+            {% endif %}
+            {% if field.help_text %}
+                <p style="color: #777; font-size: 12px;">{{ field.help_text }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <button type="submit">Register</button>
+</form>
+
+<p>Already have an account? <a href="{% url 'accounts:login' %}">Login here</a></p>
+{% endblock %}
