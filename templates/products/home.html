@@ -5,30 +5,36 @@
 {% block content %}
 <h1>Welcome to Wonder</h1>
 <p>Browse our categories below.</p>
-<form action="{% url 'products:product_list' %}" method="get" style="margin: 15px 0;">
+
+<form action="{% url 'products:product_list' %}" method="get" class="search-form" style="max-width: 500px; margin-top: 15px;">
     <input type="text" name="q" placeholder="Search products...">
     <button type="submit">Search</button>
 </form>
 
-<h2>Categories</h2>
-<ul>
+<h2 style="margin: 24px 0 12px;">Categories</h2>
+<ul class="category-list" style="display: flex; flex-wrap: wrap; gap: 16px; list-style: none;">
     {% for category in categories %}
-        <li><a href="{% url 'products:product_list' %}?category={{ category.slug }}">{{ category.name }}</a></li>
+        <li><a href="{% url 'products:product_list' %}?category={{ category.slug }}" style="background:white; padding:8px 16px; border-radius:20px; box-shadow:0 1px 3px rgba(0,0,0,0.1);">{{ category.name }}</a></li>
     {% endfor %}
 </ul>
 
-<h2>Featured Products</h2>
-<div style="display: flex; flex-wrap: wrap; gap: 20px;">
+<h2 style="margin: 30px 0 16px;">Featured Products</h2>
+<div class="product-grid">
     {% for product in featured_products %}
-        <div style="border: 1px solid #ccc; padding: 15px; width: 200px; background: white;">
-            {% if product.image %}
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; height: 150px; object-fit: cover;">
-            {% else %}
-                <div style="width: 100%; height: 150px; background: #ddd; display: flex; align-items: center; justify-content: center;">No Image</div>
-            {% endif %}
-            <h3>{{ product.name }}</h3>
-            <p>₹{{ product.price }}</p>
-            <a href="{% url 'products:product_detail' product.slug %}">View Details</a>
+        <div class="product-card">
+            <div class="product-card-image">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% else %}
+                    <span>No Image</span>
+                {% endif %}
+            </div>
+            <div class="product-card-body">
+                <div class="product-card-category">{{ product.category.name }}</div>
+                <h3>{{ product.name }}</h3>
+                <div class="product-card-price">₹{{ product.price }}</div>
+                <a href="{% url 'products:product_detail' product.slug %}" class="view-btn">View Details</a>
+            </div>
         </div>
     {% empty %}
         <p>No products available yet.</p>

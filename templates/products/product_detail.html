@@ -5,19 +5,19 @@
 {% block content %}
 <a href="{% url 'products:product_list' %}">&larr; Back to Shop</a>
 
-<div style="display: flex; gap: 30px; margin-top: 20px;">
-    <div style="width: 350px;">
+<div class="product-detail" style="margin-top: 20px;">
+    <div class="product-detail-image">
         {% if product.image %}
-            <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%;">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
         {% else %}
-            <div style="width: 100%; height: 300px; background: #ddd; display: flex; align-items: center; justify-content: center;">No Image</div>
+            <span>No Image</span>
         {% endif %}
     </div>
 
-    <div>
+    <div class="product-detail-info">
         <h1>{{ product.name }}</h1>
         <p><strong>Category:</strong> {{ product.category.name }}</p>
-        <p style="font-size: 24px; color: #1a1a2e;">₹{{ product.price }}</p>
+        <p class="price">₹{{ product.price }}</p>
         <p>{{ product.description }}</p>
         <p>
             {% if product.stock > 0 %}
@@ -27,23 +27,28 @@
             {% endif %}
         </p>
         <form action="{% url 'cart:add_to_cart' product.id %}" method="get">
-            <button type="submit">Add to Cart</button>
+            <button type="submit" class="add-to-cart-btn">Add to Cart</button>
         </form>
     </div>
 </div>
 
-<h2 style="margin-top: 40px;">Related Products</h2>
-<div style="display: flex; flex-wrap: wrap; gap: 20px;">
+<h2 style="margin: 30px 0 16px;">Related Products</h2>
+<div class="product-grid">
     {% for rp in related_products %}
-        <div style="border: 1px solid #ccc; padding: 15px; width: 200px; background: white;">
-            {% if rp.image %}
-                <img src="{{ rp.image.url }}" alt="{{ rp.name }}" style="width: 100%; height: 150px; object-fit: cover;">
-            {% else %}
-                <div style="width: 100%; height: 150px; background: #ddd; display: flex; align-items: center; justify-content: center;">No Image</div>
-            {% endif %}
-            <h3>{{ rp.name }}</h3>
-            <p>₹{{ rp.price }}</p>
-            <a href="{% url 'products:product_detail' rp.slug %}">View Details</a>
+        <div class="product-card">
+            <div class="product-card-image">
+                {% if rp.image %}
+                    <img src="{{ rp.image.url }}" alt="{{ rp.name }}">
+                {% else %}
+                    <span>No Image</span>
+                {% endif %}
+            </div>
+            <div class="product-card-body">
+                <div class="product-card-category">{{ rp.category.name }}</div>
+                <h3>{{ rp.name }}</h3>
+                <div class="product-card-price">₹{{ rp.price }}</div>
+                <a href="{% url 'products:product_detail' rp.slug %}" class="view-btn">View Details</a>
+            </div>
         </div>
     {% empty %}
         <p>No related products.</p>

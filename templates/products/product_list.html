@@ -5,20 +5,20 @@
 {% block content %}
 <h1>Shop</h1>
 
-<form method="get" style="margin-bottom: 20px;">
+<form method="get" class="search-form">
     <input type="text" name="q" placeholder="Search products..." value="{{ query }}">
     <button type="submit">Search</button>
 </form>
 
-<div style="display: flex; gap: 30px;">
-    <aside style="width: 200px;">
+<div class="shop-layout">
+    <aside class="sidebar">
         <h3>Categories</h3>
-        <ul style="list-style: none;">
-            <li><a href="{% url 'products:product_list' %}">All</a></li>
+        <ul class="category-list">
+            <li><a href="{% url 'products:product_list' %}" class="{% if not selected_category %}active{% endif %}">All</a></li>
             {% for category in categories %}
                 <li>
                     <a href="{% url 'products:product_list' %}?category={{ category.slug }}"
-                       style="{% if selected_category == category.slug %}font-weight: bold;{% endif %}">
+                       class="{% if selected_category == category.slug %}active{% endif %}">
                         {{ category.name }}
                     </a>
                 </li>
@@ -26,18 +26,22 @@
         </ul>
     </aside>
 
-    <div style="flex: 1; display: flex; flex-wrap: wrap; gap: 20px;">
+    <div class="product-grid">
         {% for product in products %}
-            <div style="border: 1px solid #ccc; padding: 15px; width: 200px; background: white;">
-                {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; height: 150px; object-fit: cover;">
-                {% else %}
-                    <div style="width: 100%; height: 150px; background: #ddd; display: flex; align-items: center; justify-content: center;">No Image</div>
-                {% endif %}
-                <h3>{{ product.name }}</h3>
-                <p>{{ product.category.name }}</p>
-                <p>₹{{ product.price }}</p>
-                <a href="{% url 'products:product_detail' product.slug %}">View Details</a>
+            <div class="product-card">
+                <div class="product-card-image">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% else %}
+                        <span>No Image</span>
+                    {% endif %}
+                </div>
+                <div class="product-card-body">
+                    <div class="product-card-category">{{ product.category.name }}</div>
+                    <h3>{{ product.name }}</h3>
+                    <div class="product-card-price">₹{{ product.price }}</div>
+                    <a href="{% url 'products:product_detail' product.slug %}" class="view-btn">View Details</a>
+                </div>
             </div>
         {% empty %}
             <p>No products found.</p>

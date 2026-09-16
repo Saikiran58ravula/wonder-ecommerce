@@ -5,50 +5,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Wonder{% endblock %}</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: #f5f5f5; color: #222; }
-        header { background: #1a1a2e; color: white; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
-        header a { color: white; text-decoration: none; }
-        .logo { font-size: 24px; font-weight: bold; }
-        nav a { margin-left: 20px; color: #ddd; }
-        nav a:hover { color: white; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        footer { background: #1a1a2e; color: #aaa; text-align: center; padding: 20px; margin-top: 40px; }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <header>
+    <header class="site-header">
         <a href="{% url 'products:home' %}" class="logo">Wonder</a>
-        <nav>
-    <a href="{% url 'products:home' %}">Home</a>
-    <a href="{% url 'products:product_list' %}">Shop</a>
-    <a href="{% url 'cart:view_cart' %}">Cart</a>
-    {% if user.is_authenticated %}
-    <a href="{% url 'accounts:profile' %}">{{ user.username }}</a>
-    <a href="{% url 'orders:order_history' %}">My Orders</a>
-    <a href="{% url 'accounts:logout' %}">Logout</a>
-    {% else %}
-        <a href="{% url 'accounts:login' %}">Login</a>
-        <a href="{% url 'accounts:register' %}">Register</a>
-    {% endif %}
-</nav>
-        {% if messages %}
-    <div class="container" style="padding-top: 10px;">
-        {% for message in messages %}
-            <p style="background: #d4edda; color: #155724; padding: 10px; border-radius: 4px;">{{ message }}</p>
-        {% endfor %}
-    </div>
-{% endif %}
+        <nav class="main-nav">
+            <a href="{% url 'products:home' %}">Home</a>
+            <a href="{% url 'products:product_list' %}">Shop</a>
+            <a href="{% url 'cart:view_cart' %}">Cart</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'accounts:profile' %}">{{ user.username }}</a>
+                <a href="{% url 'orders:order_history' %}">My Orders</a>
+                <a href="{% url 'accounts:logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'accounts:login' %}">Login</a>
+                <a href="{% url 'accounts:register' %}">Register</a>
+            {% endif %}
+        </nav>
     </header>
 
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message-box">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     <div class="container">
         {% block content %}
         {% endblock %}
     </div>
 
-    <footer>
+    <footer class="site-footer">
         &copy; 2026 Wonder. Built by Sunny.
     </footer>
 </body>
