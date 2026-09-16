@@ -21,10 +21,19 @@
     <header>
         <a href="{% url 'products:home' %}" class="logo">Wonder</a>
         <nav>
-            <a href="{% url 'products:home' %}">Home</a>
-            <a href="{% url 'products:product_list' %}">Shop</a>
-        </nav>
+    <a href="{% url 'products:home' %}">Home</a>
+    <a href="{% url 'products:product_list' %}">Shop</a>
+    <a href="{% url 'cart:view_cart' %}">Cart</a>
+</nav>
+        {% if messages %}
+    <div class="container" style="padding-top: 10px;">
+        {% for message in messages %}
+            <p style="background: #d4edda; color: #155724; padding: 10px; border-radius: 4px;">{{ message }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
     </header>
+
 
     <div class="container">
         {% block content %}
