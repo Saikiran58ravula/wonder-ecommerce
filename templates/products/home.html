@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Wonder - Home{% endblock %}
+
+{% block content %}
+<h1>Welcome to Wonder</h1>
+<p>Browse our categories below.</p>
+
+<h2>Categories</h2>
+<ul>
+    {% for category in categories %}
+        <li><a href="{% url 'products:product_list' %}?category={{ category.slug }}">{{ category.name }}</a></li>
+    {% endfor %}
+</ul>
+
+<h2>Featured Products</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 20px;">
+    {% for product in featured_products %}
+        <div style="border: 1px solid #ccc; padding: 15px; width: 200px; background: white;">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; height: 150px; object-fit: cover;">
+            {% else %}
+                <div style="width: 100%; height: 150px; background: #ddd; display: flex; align-items: center; justify-content: center;">No Image</div>
+            {% endif %}
+            <h3>{{ product.name }}</h3>
+            <p>₹{{ product.price }}</p>
+            <a href="{% url 'products:product_detail' product.slug %}">View Details</a>
+        </div>
+    {% empty %}
+        <p>No products available yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}

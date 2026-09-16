@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} - Wonder{% endblock %}
+
+{% block content %}
+<a href="{% url 'products:product_list' %}">&larr; Back to Shop</a>
+
+<div style="display: flex; gap: 30px; margin-top: 20px;">
+    <div style="width: 350px;">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%;">
+        {% else %}
+            <div style="width: 100%; height: 300px; background: #ddd; display: flex; align-items: center; justify-content: center;">No Image</div>
+        {% endif %}
+    </div>
+
+    <div>
+        <h1>{{ product.name }}</h1>
+        <p><strong>Category:</strong> {{ product.category.name }}</p>
+        <p style="font-size: 24px; color: #1a1a2e;">₹{{ product.price }}</p>
+        <p>{{ product.description }}</p>
+        <p>
+            {% if product.stock > 0 %}
+                In Stock ({{ product.stock }} available)
+            {% else %}
+                Out of Stock
+            {% endif %}
+        </p>
+        <button>Add to Cart</button>
+    </div>
+</div>
+
+<h2 style="margin-top: 40px;">Related Products</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 20px;">
+    {% for rp in related_products %}
+        <div style="border: 1px solid #ccc; padding: 15px; width: 200px; background: white;">
+            {% if rp.image %}
+                <img src="{{ rp.image.url }}" alt="{{ rp.name }}" style="width: 100%; height: 150px; object-fit: cover;">
+            {% else %}
+                <div style="width: 100%; height: 150px; background: #ddd; display: flex; align-items: center; justify-content: center;">No Image</div>
+            {% endif %}
+            <h3>{{ rp.name }}</h3>
+            <p>₹{{ rp.price }}</p>
+            <a href="{% url 'products:product_detail' rp.slug %}">View Details</a>
+        </div>
+    {% empty %}
+        <p>No related products.</p>
+    {% endfor %}
+</div>
+{% endblock %}
