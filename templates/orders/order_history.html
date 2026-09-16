@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}My Orders - Wonder{% endblock %}
+
+{% block content %}
+<h1>My Orders</h1>
+
+{% if orders %}
+    <table style="width: 100%; border-collapse: collapse; background: white;">
+        <thead>
+            <tr style="border-bottom: 2px solid #ccc; text-align: left;">
+                <th style="padding: 10px;">Order #</th>
+                <th style="padding: 10px;">Date</th>
+                <th style="padding: 10px;">Status</th>
+                <th style="padding: 10px;">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 10px;">
+                    <a href="{% url 'orders:order_success' order.id %}">#{{ order.id }}</a>
+                </td>
+                <td style="padding: 10px;">{{ order.created_at|date:"d M Y" }}</td>
+                <td style="padding: 10px;">{{ order.get_status_display }}</td>
+                <td style="padding: 10px;">₹{{ order.total_amount }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>You haven't placed any orders yet.</p>
+    <a href="{% url 'products:product_list' %}">Start Shopping</a>
+{% endif %}
+{% endblock %}
