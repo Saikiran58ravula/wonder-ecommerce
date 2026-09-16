@@ -6,32 +6,32 @@
 <h1>Thank you, {{ order.full_name }}!</h1>
 <p>Your order <strong>#{{ order.id }}</strong> has been placed successfully.</p>
 
-<table style="width: 100%; border-collapse: collapse; background: white; margin-top: 20px;">
+<table class="cart-table" style="margin-top: 20px;">
     <thead>
-        <tr style="border-bottom: 2px solid #ccc; text-align: left;">
-            <th style="padding: 10px;">Product</th>
-            <th style="padding: 10px;">Quantity</th>
-            <th style="padding: 10px;">Subtotal</th>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
         </tr>
     </thead>
     <tbody>
         {% for item in order.items.all %}
-        <tr style="border-bottom: 1px solid #eee;">
-            <td style="padding: 10px;">{{ item.product_name }}</td>
-            <td style="padding: 10px;">{{ item.quantity }}</td>
-            <td style="padding: 10px;">₹{{ item.get_subtotal }}</td>
+        <tr>
+            <td>{{ item.product_name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>₹{{ item.get_subtotal }}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
-<h2 style="margin-top: 20px;">Total Paid: ₹{{ order.total_amount }}</h2>
-<p><strong>Shipping to:</strong> {{ order.address }}</p>
+<div class="cart-total">Total Paid: ₹{{ order.total_amount }}</div>
+<p style="margin-top: 12px;"><strong>Shipping to:</strong> {{ order.address }}</p>
 <p><strong>Phone:</strong> {{ order.phone }}</p>
-<p><strong>Status:</strong> {{ order.get_status_display }}</p>
+<p><strong>Status:</strong> <span class="status-badge">{{ order.get_status_display }}</span></p>
 
 <p style="margin-top: 20px;">
-    <a href="{% url 'products:product_list' %}">Continue Shopping</a> |
+    <a href="{% url 'products:product_list' %}" class="btn-primary">Continue Shopping</a>
     <a href="{% url 'orders:order_history' %}">View All Orders</a>
 </p>
 {% endblock %}

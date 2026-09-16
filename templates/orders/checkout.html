@@ -5,28 +5,30 @@
 {% block content %}
 <h1>Checkout</h1>
 
-<div style="display: flex; gap: 40px;">
-    <form method="post" style="max-width: 400px; flex: 1;">
-        {% csrf_token %}
-        {% for field in form %}
-            <div style="margin-bottom: 15px;">
-                <label>{{ field.label }}</label><br>
-                {{ field }}
-                {% if field.errors %}
-                    <p style="color: red; font-size: 13px;">{{ field.errors }}</p>
-                {% endif %}
-            </div>
-        {% endfor %}
-        <button type="submit">Place Order</button>
-    </form>
+<div class="checkout-layout">
+    <div class="form-card" style="flex: 1; min-width: 280px;">
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-field">
+                    <label>{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="form-error">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn-primary">Place Order</button>
+        </form>
+    </div>
 
-    <div style="flex: 1;">
+    <div class="order-summary">
         <h2>Order Summary</h2>
-        <table style="width: 100%; border-collapse: collapse; background: white;">
+        <table>
             {% for item in cart.items.all %}
-            <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding: 8px;">{{ item.product.name }} x {{ item.quantity }}</td>
-                <td style="padding: 8px; text-align: right;">₹{{ item.get_subtotal }}</td>
+            <tr>
+                <td>{{ item.product.name }} x {{ item.quantity }}</td>
+                <td style="text-align: right;">₹{{ item.get_subtotal }}</td>
             </tr>
             {% endfor %}
         </table>

@@ -6,46 +6,46 @@
 <h1>Your Cart</h1>
 
 {% if cart.items.all %}
-    <table style="width: 100%; border-collapse: collapse; background: white;">
+    <table class="cart-table">
         <thead>
-            <tr style="border-bottom: 2px solid #ccc; text-align: left;">
-                <th style="padding: 10px;">Product</th>
-                <th style="padding: 10px;">Price</th>
-                <th style="padding: 10px;">Quantity</th>
-                <th style="padding: 10px;">Subtotal</th>
-                <th style="padding: 10px;"></th>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             {% for item in cart.items.all %}
-            <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding: 10px;">
+            <tr>
+                <td>
                     <a href="{% url 'products:product_detail' item.product.slug %}">{{ item.product.name }}</a>
                 </td>
-                <td style="padding: 10px;">₹{{ item.product.price }}</td>
-                <td style="padding: 10px;">
-                    <form action="{% url 'cart:update_cart_item' item.id %}" method="post" style="display: inline;">
+                <td>₹{{ item.product.price }}</td>
+                <td>
+                    <form action="{% url 'cart:update_cart_item' item.id %}" method="post" class="qty-form">
                         {% csrf_token %}
                         <button type="submit" name="action" value="decrease">-</button>
                         {{ item.quantity }}
                         <button type="submit" name="action" value="increase">+</button>
                     </form>
                 </td>
-                <td style="padding: 10px;">₹{{ item.get_subtotal }}</td>
-                <td style="padding: 10px;">
-                    <a href="{% url 'cart:remove_from_cart' item.id %}" style="color: red;">Remove</a>
+                <td>₹{{ item.get_subtotal }}</td>
+                <td>
+                    <a href="{% url 'cart:remove_from_cart' item.id %}" class="remove-link">Remove</a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
-    <h2 style="margin-top: 20px;">Total: ₹{{ cart.get_total }}</h2>
-    <a href="{% url 'orders:checkout' %}" style="display:inline-block; background:#1a1a2e; color:white; padding:10px 20px; text-decoration:none; margin-right:10px;">Proceed to Checkout</a>
+    <div class="cart-total">Total: ₹{{ cart.get_total }}</div>
+    <a href="{% url 'orders:checkout' %}" class="btn-primary">Proceed to Checkout</a>
     <a href="{% url 'products:product_list' %}">Continue Shopping</a>
 
 {% else %}
     <p>Your cart is empty.</p>
-    <a href="{% url 'products:product_list' %}">Browse Products</a>
+    <a href="{% url 'products:product_list' %}" class="btn-primary">Browse Products</a>
 {% endif %}
 {% endblock %}

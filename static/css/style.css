@@ -38,6 +38,15 @@ a {
     font-size: 24px;
     font-weight: 700;
     letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-img {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
 }
 
 .main-nav {
@@ -293,6 +302,166 @@ a {
     text-align: center;
     padding: 24px;
     margin-top: 50px;
+}
+
+/* ===== CART PAGE ===== */
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.cart-table th {
+    background: #f0f0f3;
+    text-align: left;
+    padding: 14px;
+    font-size: 14px;
+    color: #555;
+}
+
+.cart-table td {
+    padding: 14px;
+    border-top: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.qty-form {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.qty-form button {
+    width: 26px;
+    height: 26px;
+    border: 1px solid #ccc;
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.qty-form button:hover {
+    background: #f0f0f3;
+}
+
+.remove-link {
+    color: #c0392b;
+    font-size: 13px;
+}
+
+.cart-total {
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.btn-primary {
+    display: inline-block;
+    background: #1a1a2e;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 15px;
+    margin-right: 12px;
+    margin-top: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background: #2a2a4e;
+}
+
+/* ===== FORMS (login, register, checkout) ===== */
+.form-card {
+    background: white;
+    max-width: 420px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.form-field {
+    margin-bottom: 16px;
+}
+
+.form-field label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #444;
+}
+
+.form-field input,
+.form-field textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.form-field textarea {
+    min-height: 90px;
+}
+
+.form-error {
+    color: #c0392b;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.form-help {
+    color: #888;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.auth-switch {
+    margin-top: 16px;
+    font-size: 14px;
+}
+
+/* ===== CHECKOUT ===== */
+.checkout-layout {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.order-summary {
+    flex: 1;
+    min-width: 280px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    height: fit-content;
+}
+
+.order-summary table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.order-summary td {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* ===== ORDER SUCCESS / HISTORY ===== */
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #fff3cd;
+    color: #856404;
 }
 
 /* ===== RESPONSIVE ===== */
