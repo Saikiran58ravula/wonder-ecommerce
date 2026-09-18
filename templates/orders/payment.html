@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Complete Payment - Wonder{% endblock %}
+
+{% block content %}
+<h1>Complete Your Payment</h1>
+<p>Order #{{ order.id }} — Total: ₹{{ order.total_amount }}</p>
+
+<div class="form-card" style="margin-top: 20px;">
+    <p>Click the button below to open the secure payment window.</p>
+    <button id="pay-btn" class="btn-primary">Pay ₹{{ order.total_amount }}</button>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    document.getElementById('pay-btn').onclick = function (e) {
+        var options = {
+            "key": "{{ razorpay_key_id }}",
+            "amount": "{{ amount_in_paise }}",
+            "currency": "INR",
+            "name": "Wonder",
+            "description": "Order #{{ order.id }}",
+            "order_id": "{{ razorpay_order_id }}",
+            "handler": function (response) {
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = "{% url 'orders:payment_success' %}";
+
+                var csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = 'csrfmiddlewaretoken';
+                csrfInput.value = '{{ csrf_token }}';
+                form.appendChild(csrfInput);
+
+                var fields = {
+                    'order_id': "{{ order.id }}",
+                    'razorpay_payment_id': response.razorpay_payment_id,
+                    'razorpay_order_id': response.razorpay_order_id,
+                    'razorpay_signature': response.razorpay_signature
+                };
+
+                for (var key in fields) {
+                    var input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = key;
+                    input.value = fields[key];
+                    form.appendChild(input);
+                }
+
+                document.body.appendChild(form);
+                form.submit();
+            },
+            "prefill": {
+                "name": "{{ order.full_name }}",
+                "contact": "{{ order.phone }}"
+            },
+            "theme": {
+                "color": "#1a1a2e"
+            }
+        };
+        var rzp = new Razorpay(options);
+        rzp.open();
+        e.preventDefault();
+    };
+</script>
+{% endblock %}

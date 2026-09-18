@@ -22,7 +22,11 @@
                     <a href="{% url 'orders:order_success' order.id %}">#{{ order.id }}</a>
                 </td>
                 <td>{{ order.created_at|date:"d M Y" }}</td>
-                <td><span class="status-badge">{{ order.get_status_display }}</span></td>
+                <td>
+    <span class="status-badge" style="{% if order.status == 'cancelled' %}background:#f8d7da;color:#721c24;{% elif order.status == 'delivered' %}background:#d4edda;color:#155724;{% elif order.status == 'paid' %}background:#d1ecf1;color:#0c5460;{% endif %}">
+        {{ order.get_status_display }}
+    </span>
+</td>
                 <td>₹{{ order.total_amount }}</td>
             </tr>
             {% endfor %}

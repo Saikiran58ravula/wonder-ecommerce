@@ -464,6 +464,69 @@ a {
     color: #856404;
 }
 
+/* ===== ORDER TRACKING ===== */
+.tracker {
+    display: flex;
+    justify-content: space-between;
+    margin: 30px 0;
+    position: relative;
+}
+
+.tracker::before {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #ddd;
+    z-index: 0;
+}
+
+.tracker-step {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.tracker-dot {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #ddd;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 8px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.tracker-step.done .tracker-dot {
+    background: #28a745;
+}
+
+.tracker-label {
+    font-size: 13px;
+    color: #666;
+}
+
+.tracker-step.done .tracker-label {
+    color: #222;
+    font-weight: 600;
+}
+
+.tracking-info {
+    background: #f0f8ff;
+    border: 1px solid #cce4f7;
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin-top: 16px;
+    font-size: 14px;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .shop-layout {

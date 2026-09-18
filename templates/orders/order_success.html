@@ -6,6 +6,27 @@
 <h1>Thank you, {{ order.full_name }}!</h1>
 <p>Your order <strong>#{{ order.id }}</strong> has been placed successfully.</p>
 
+{% if order.status == 'cancelled' %}
+    <p class="tracking-info">This order has been cancelled.</p>
+{% else %}
+    <div class="tracker">
+        {% for step in order.get_status_steps %}
+            <div class="tracker-step {% if step.done %}done{% endif %}">
+                <div class="tracker-dot">{% if step.done %}&#10003;{% else %}{{ forloop.counter }}{% endif %}</div>
+                <div class="tracker-label">{{ step.label }}</div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if order.tracking_number %}
+        <div class="tracking-info">
+            <strong>Tracking Number:</strong> {{ order.tracking_number }}
+            {% if order.shipped_at %}<br><strong>Shipped on:</strong> {{ order.shipped_at|date:"d M Y, h:i A" }}{% endif %}
+            {% if order.delivered_at %}<br><strong>Delivered on:</strong> {{ order.delivered_at|date:"d M Y, h:i A" }}{% endif %}
+        </div>
+    {% endif %}
+{% endif %}
+
 <table class="cart-table" style="margin-top: 20px;">
     <thead>
         <tr>
@@ -28,7 +49,6 @@
 <div class="cart-total">Total Paid: ₹{{ order.total_amount }}</div>
 <p style="margin-top: 12px;"><strong>Shipping to:</strong> {{ order.address }}</p>
 <p><strong>Phone:</strong> {{ order.phone }}</p>
-<p><strong>Status:</strong> <span class="status-badge">{{ order.get_status_display }}</span></p>
 
 <p style="margin-top: 20px;">
     <a href="{% url 'products:product_list' %}" class="btn-primary">Continue Shopping</a>
