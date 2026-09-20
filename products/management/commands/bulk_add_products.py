@@ -4,9 +4,8 @@ from products.models import Category, Product
 
 
 class Command(BaseCommand):
-    help = 'Bulk add 102 products, mapped into existing categories only'
+    help = 'Bulk add all Wonder products, mapped into existing categories only (safe to re-run)'
 
-    # Maps each product-list category to your REAL existing category name
     CATEGORY_MAP = {
         "Cars": "Electronics",
         "Bikes": "Electronics",
@@ -21,6 +20,7 @@ class Command(BaseCommand):
         "Laptops": "Electronics",
         "Mobiles": "Mobiles",
         "Fashion": "Fashion",
+        "Beauty": "Beauty",
     }
 
     def handle(self, *args, **kwargs):
@@ -155,6 +155,26 @@ class Command(BaseCommand):
             ("Zephyron Street Combo", "zephyron-street-combo", "8799", "A stylish streetwear collection featuring an oversized graphic T-shirt, cargo pants, designer sneakers, smartwatch, cap, chain, and sunglasses for a trendy urban look.", "Fashion"),
             ("Lumivox Luxe Combo", "lumivox-luxe-combo", "11499", "A luxury fashion combo with a premium blazer, black turtleneck, tailored trousers, Chelsea boots, automatic watch, premium wallet, and signature perfume.", "Fashion"),
             ("Kryon Active Combo", "kryon-active-combo", "9999", "A performance-inspired outfit including a premium polo T-shirt, joggers, running shoes, fitness smartwatch, sports sunglasses, and lightweight backpack for active lifestyles.", "Fashion"),
+
+            # --- BEAUTY (18) -> Beauty ---
+            ("Aloe Vera Soap", "aloe-vera-soap", "99", "Soothing & Moisturizing. Made with Aloe Vera, Coconut Oil & Natural Glycerin. Hydrates, soothes & refreshes skin. For all skin types. 100% Natural & Handmade. Size: 100g.", "Beauty"),
+            ("Neem Soap", "neem-soap", "99", "Purifying & Cleansing. Made with Neem Extract, Coconut Oil & Natural Glycerin. Deep cleansing & helps keep skin fresh. For all skin types. 100% Natural & Handmade. Size: 100g.", "Beauty"),
+            ("Lavender Soap", "lavender-soap", "109", "Calming & Refreshing. Made with Lavender Extract, Coconut Oil & Natural Glycerin. Gently cleanses & leaves skin soft. For all skin types. 100% Natural & Handmade. Size: 100g.", "Beauty"),
+            ("Rose Soap", "rose-soap", "109", "Hydrating & Refreshing. Made with Rose Extract, Rose Petals & Natural Glycerin. Refreshes, softens & nourishes skin. For all skin types. 100% Natural & Handmade. Size: 100g.", "Beauty"),
+            ("Charcoal Soap", "charcoal-soap", "129", "Deep Cleansing & Detoxifying. Made with Activated Charcoal, Coconut Oil & Natural Glycerin. Removes excess oil & impurities. For normal, oily & combination skin. 100% Natural & Handmade. Size: 100g.", "Beauty"),
+            ("Olive Soap", "olive-soap", "119", "Nourishing & Moisturizing. Made with Olive Oil, Coconut Oil & Natural Glycerin. Softens, nourishes & hydrates skin. For dry & normal skin. 100% Natural & Handmade. Size: 100g.", "Beauty"),
+            ("Honey Soap", "honey-soap", "129", "Moisturizing & Nourishing. Made with Pure Honey, Coconut Oil & Natural Glycerin. Helps keep skin soft, smooth & hydrated. For all skin types. 100% Natural & Handmade. Size: 100g.", "Beauty"),
+            ("Mint Soap", "mint-soap", "109", "Cooling & Refreshing. Made with Mint Extract, Coconut Oil & Natural Glycerin. Refreshes skin & provides a cooling feel. For normal & oily skin. 100% Natural & Handmade. Size: 100g.", "Beauty"),
+            ("Neem Face Wash", "neem-face-wash", "199", "Purifying & Deep Cleansing. Made with Neem Extract, Aloe Vera & Natural Cleansers. Removes dirt, excess oil & impurities. For oily, combination & acne-prone skin. Natural & Gentle Formula. Size: 100ml.", "Beauty"),
+            ("Saffron Face Wash", "saffron-face-wash", "229", "Brightening & Refreshing. Made with Saffron Extract, Aloe Vera & Natural Cleansers. Gently cleanses & leaves skin fresh. For all skin types. Natural & Handmade. Size: 100ml.", "Beauty"),
+            ("Cucumber Gel", "cucumber-gel", "249", "Cooling & Hydrating. Made with Cucumber Extract, Aloe Vera & Vitamin E. Soothes, hydrates & refreshes skin. For all skin types. 100% Natural & Handmade. Size: 100g.", "Beauty"),
+            ("Rose Gel", "rose-gel", "249", "Hydrating & Soothing. Made with Rose Extract, Aloe Vera & Vitamin E. Refreshes, hydrates & softens skin. For all skin types. 100% Natural & Handmade. Size: 100g.", "Beauty"),
+            ("Coffee Face Scrub", "coffee-face-scrub", "299", "Exfoliating & Brightening. Made with Coffee Grounds, Aloe Vera & Natural Oils. Gently exfoliates & removes dead skin. For normal, oily & combination skin. 100% Natural & Handmade. Size: 100g.", "Beauty"),
+            ("Green Tea Face", "green-tea-face", "279", "Purifying & Refreshing. Made with Green Tea, Aloe Vera & Natural Botanicals. Refreshes skin & helps remove excess oil. For oily, combination & normal skin. 100% Natural & Handmade. Size: 100g.", "Beauty"),
+            ("Turmeric Face Pack", "turmeric-face-pack-beauty", "219", "Brightening & Purifying. Made with Turmeric, Besan & Natural Botanicals. Cleanses, refreshes & brightens the appearance of skin. For all skin types. 100% Natural & Chemical Free. Size: 100g.", "Beauty"),
+            ("Neem Face Pack", "neem-face-pack-beauty", "219", "Purifying & Deep Cleansing. Made with Neem Powder, Multani Mitti & Natural Botanicals. Helps absorb excess oil & cleanse skin. For oily, combination & acne-prone skin. 100% Natural & Chemical Free. Size: 100g.", "Beauty"),
+            ("Rose Clay Face", "rose-clay-face", "229", "Gentle Cleansing & Glowing Skin. Made with Rose Clay, Rose Petals & Natural Botanicals. Gently cleanses & leaves skin soft and fresh. For normal, dry & sensitive skin. 100% Natural & Chemical Free. Size: 100g.", "Beauty"),
+            ("Multani Mitti Face", "multani-mitti-face", "199", "Deep Cleansing & Glowing Skin. Made with Multani Mitti, Rose Petals & Natural Botanicals. Absorbs excess oil & helps refresh skin. For oily & combination skin. 100% Natural & Chemical Free. Size: 100g.", "Beauty"),
         ]
 
         created_count = 0
