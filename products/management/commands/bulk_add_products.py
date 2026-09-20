@@ -11,7 +11,7 @@ class Command(BaseCommand):
         "Bikes": "Electronics",
         "Watches": "Accessories",
         "Headset": "Accessories",
-        "Shoes": "Accessories",
+        "Shoes": "Shoes",
         "Dresses": "Fashion",
         "Accessories": "Accessories",
         "Groceries": "Groceries",
@@ -62,15 +62,15 @@ class Command(BaseCommand):
             ("QUANTUM Nebula Smart Audio Device", "quantum-nebula-smart-audio-device", "45000", "A futuristic, seamless audio device with earcups sculpted from polished ceramic.", "Headset"),
             ("SIMPLE Open-Air Aluminum Headphones", "simple-open-air-aluminum-headphones", "12000", "A minimalist, high-key audiophile headset featuring an open-back design with aluminum mesh.", "Headset"),
 
-            # --- SHOES (7) -> Accessories ---
-            ("Quantum Neon Running Shoes", "quantum-neon-running-shoes", "3999", "Lightweight performance running shoes featuring a breathable black mesh upper with electric blue accents.", "Shoes"),
-            ("FastRide Velocity Runner", "fastride-velocity-runner", "3499", "Stylish navy blue sports shoes with vibrant orange highlights, engineered with breathable knit fabric.", "Shoes"),
-            ("Climax Hyper Sprint", "climax-hyper-sprint", "4299", "Premium black athletic sneakers featuring neon green and cyan detailing, futuristic midsole technology.", "Shoes"),
-            ("StrideX Air Motion", "stridex-air-motion", "3799", "Modern white running shoes with bold orange accents, breathable engineered mesh, ergonomic cushioning.", "Shoes"),
-            ("Quantum Aero Pro", "quantum-aero-pro", "4199", "Performance-focused teal and black sports shoes with advanced air-cushion technology.", "Shoes"),
-            ("Elevate Neo Runner", "elevate-neo-runner", "4599", "High-performance black and neon-green running shoes with ultra-lightweight construction.", "Shoes"),
-            ("Strap Fusion X", "strap-fusion-x", "3899", "Premium navy and aqua athletic shoes featuring a breathable mesh upper, shock-absorbing EVA sole.", "Shoes"),
-            ("GLM Aero Flex", "glm-aero-flex", "4099", "Contemporary grey and navy sports shoes with lime green accents, lightweight knitted upper.", "Shoes"),
+            # --- SHOES (8) -> Shoes ---
+            ("Quantum Neon Running Shoes", "quantum-neon-running-shoes", "3999", "Lightweight & High-Performance. Material: Breathable Mesh Upper, EVA Midsole & Rubber Outsole. Benefits: Lightweight Comfort, Flexible Movement & Reliable Grip. Suitable For: Running, Jogging & Daily Fitness. Lightweight & Comfortable Design. Sizes: 6-11.", "Shoes"),
+            ("FastRide Velocity Runner", "fastride-velocity-runner", "3499", "Fast, Flexible & Comfortable. Material: Breathable Mesh, Cushioned EVA Sole & Rubber Outsole. Benefits: Shock Absorption, Flexibility & Comfortable Running. Suitable For: Running, Jogging & Training. Performance-Focused Running Design. Sizes: 6-11.", "Shoes"),
+            ("Climax Hyper Sprint", "climax-hyper-sprint", "4299", "Sporty & Responsive. Material: Lightweight Mesh Upper, EVA Cushioning & Rubber Grip Sole. Benefits: Responsive Feel, Lightweight Support & Strong Traction. Suitable For: Sprinting, Running & Sports Training. Designed for Active Performance. Sizes: 6-11.", "Shoes"),
+            ("StrideX Air Motion", "stridex-air-motion", "3799", "Airy & Cushioned Comfort. Material: Air-Mesh Upper, EVA Foam Midsole & Rubber Outsole. Benefits: Breathable Feel, Soft Cushioning & Flexible Stride. Suitable For: Walking, Running & Everyday Activities. Breathable & Flexible Comfort. Sizes: 6-11.", "Shoes"),
+            ("Quantum Aero Pro", "quantum-aero-pro", "4199", "Premium & Lightweight Performance. Material: Engineered Mesh Upper, EVA Cushioning & Durable Rubber Sole. Benefits: Lightweight Support, Heel Stability & Excellent Grip. Suitable For: Running, Training & Fitness. Premium Performance Design. Sizes: 6-11.", "Shoes"),
+            ("Elevate Neo Runner", "elevate-neo-runner", "4599", "Modern & Cushioned. Material: Knit-Mesh Upper, EVA Midsole & Rubber Outsole. Benefits: Soft Cushioning, Arch Support & Flexible Movement. Suitable For: Running, Walking & Gym Workouts. Modern Everyday Performance. Sizes: 6-11.", "Shoes"),
+            ("Strap Fusion X", "strap-fusion-x", "3899", "Stylish & Secure Fit. Material: Breathable Mesh Upper, Supportive Straps & Rubber Sole. Benefits: Secure Fit, Flexible Movement & Comfortable Support. Suitable For: Casual Wear, Walking & Light Training. Comfortable Sporty Design. Sizes: 6-11.", "Shoes"),
+            ("GLM Aero Flex", "glm-aero-flex", "4099", "Flexible & Lightweight. Material: Breathable Mesh Upper, EVA Foam Midsole & Rubber Outsole. Benefits: Lightweight Comfort, Flexibility & Everyday Grip. Suitable For: Walking, Running & Casual Wear. Lightweight Everyday Comfort. Sizes: 6-11.", "Shoes"),
 
             # --- DRESSES (7) -> Fashion ---
             ("Classic Elegance Combo", "classic-elegance-combo", "19999", "A refined monochrome combo featuring a black full-sleeve shirt layered over a white crew neck tee.", "Dresses"),
@@ -179,6 +179,7 @@ class Command(BaseCommand):
 
         created_count = 0
         skipped_count = 0
+        updated_count = 0
         category_cache = {}
 
         for name, slug, price, desc, list_cat in products:
@@ -194,6 +195,26 @@ class Command(BaseCommand):
                     return
 
             category = category_cache[real_cat_name]
+
+            if list_cat == "Shoes":
+                # Force-update shoes even if they already exist under the old
+                # Accessories mapping, so category and description get corrected.
+                product, created = Product.objects.update_or_create(
+                    slug=slug,
+                    defaults={
+                        'name': name,
+                        'category': category,
+                        'price': Decimal(price),
+                        'description': desc,
+                    }
+                )
+                if created:
+                    created_count += 1
+                    self.stdout.write(self.style.SUCCESS(f'Created: {name} -> {real_cat_name}'))
+                else:
+                    updated_count += 1
+                    self.stdout.write(self.style.WARNING(f'Updated: {name} -> {real_cat_name}'))
+                continue
 
             product, created = Product.objects.get_or_create(
                 slug=slug,
@@ -212,5 +233,5 @@ class Command(BaseCommand):
                 self.stdout.write(f'Already exists, skipped: {name}')
 
         self.stdout.write(self.style.SUCCESS(
-            f'\nDONE! Created {created_count} products, skipped {skipped_count} duplicates.'
+            f'\nDONE! Created {created_count}, updated {updated_count} (shoes), skipped {skipped_count} duplicates.'
         ))
