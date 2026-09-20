@@ -117,7 +117,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 # Media files (product images) - stored on Cloudinary, not local disk
 MEDIA_URL = '/media/'
@@ -128,13 +128,15 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 # django-cloudinary-storage package's collectstatic override still reads
 # the old settings.STATICFILES_STORAGE attribute directly and crashes
 # (AttributeError) if it's absent, even though Django itself now prefers
-# STORAGES.
+# STORAGES. Plain (non-compressed) static storage is used to avoid a
+# WhiteNoise compression race condition on Django admin's bundled vendor
+# JS files during collectstatic.
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
 
