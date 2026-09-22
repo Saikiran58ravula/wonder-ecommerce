@@ -5,6 +5,7 @@ Django settings for wonder_core project.
 from pathlib import Path
 from decouple import config
 import dj_database_url
+import cloudinary
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,6 +21,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost', cast=lamb
 
 
 # Application definition
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -117,9 +119,21 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Media files (product images) - stored on Cloudinary, not local disk
+# Media files (product images) - stored on Cloudinary, not local disk.
+# NOTE: 'cloudinary_storage' is intentionally NOT in INSTALLED_APPS above,
+# because that app overrides Django's collectstatic command in a way that
+# silently copies zero static files on this project/setup. We still use its
+# storage class directly (that's just a plain Python import, not dependent
+# on app registration) and configure the Cloudinary SDK manually below,
+# which is normally what that app's startup code would have done for us.
 MEDIA_URL = '/media/'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': config('CLOUDINARY_API_KEY'),
+    'API_SECRET': config('CLOUDINARY_API_SECRET'),
+}
 
 cloudinary.config(
     cloud_name=CLOUDINARY_STORAGE['CLOUD_NAME'],
