@@ -118,17 +118,25 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Media files (product images) - stored on Cloudinary, not local disk.
-# NOTE: 'cloudinary_storage' is intentionally NOT in INSTALLED_APPS above,
-# because that app overrides Django's collectstatic command in a way that
-# silently copies zero static files on this project/setup. We still use its
-# storage class directly (that's just a plain Python import, not dependent
-# on app registration) and configure the Cloudinary SDK manually below,
-# which is normally what that app's startup code would have done for us.
+# Kept only so cloudinary_storage's own collectstatic override (which reads
+# this attribute directly and crashes with AttributeError if it's missing)
+# doesn't break the build. Actual behavior is controlled by STORAGES below,
+# since Django 5.1 ignores the legacy STATICFILES_STORAGE/DEFAULT_FILE_STORAGE
+# settings entirely.
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
+# Media files (product images) - stored on Cloudinary, not local disk
 MEDIA_URL = '/media/'
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
